@@ -12,9 +12,9 @@
   let visible = [];
   function applyFilter() {
     const matching = projects.filter(item => category === 'All' || item.dataset.category === category);
-    visible = expanded ? matching : matching.slice(0, 12);
+    visible = matching;
     projects.forEach(item => { item.hidden = !visible.includes(item); });
-    more.hidden = matching.length <= 12 || expanded;
+    more.hidden = true;
     moreButton.firstChild.textContent = `View all ${matching.length} pieces `;
     count.textContent = `${matching.length} pieces to explore`;
     status.textContent = `Showing ${visible.length} of ${matching.length} pieces${category === 'All' ? '' : ` in ${category}`}.`;
