@@ -847,3 +847,14 @@ dialog {
 
 }
 
+
+/* Proposed: uncropped masonry gallery */
+.project-grid{display:block;column-count:3;column-gap:28px}
+.project{break-inside:avoid;margin-bottom:34px}
+.project-art{background:var(--white);box-shadow:0 1px 0 var(--line),0 12px 30px -18px #050f1640}
+.project-art>img{aspect-ratio:auto;object-fit:contain;width:100%;height:auto}
+.filters{position:sticky;top:0;z-index:5;background:var(--paper);padding-block:14px;margin-block:20px 8px}
+.filters button span{font-size:11px}
+@media(max-width:900px){.project-grid{column-count:2;column-gap:16px}}
+@media(max-width:520px){.project-grid{column-count:1}}
+@media(max-width:700px){.filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:calc(var(--gutter)*-1);padding-inline:var(--gutter)}.filters::-webkit-scrollbar{display:none}.filters button{flex:none;white-space:nowrap}}
