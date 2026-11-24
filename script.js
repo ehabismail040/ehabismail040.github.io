@@ -10,6 +10,27 @@
   let expanded = false;
   let category = 'All';
   let visible = [];
+  const retried = new WeakMap();
+  function reloadImage(img) {
+    const tries = retried.get(img) || 0;
+    if (tries >= 3) return;
+    retried.set(img, tries + 1);
+    const base = img.getAttribute('src').split('?')[0];
+    img.loading = 'eager';
+    img.src = `${base}?r=${tries + 1}`;
+  }
+  function recoverImages() {
+    setTimeout(() => {
+      visible.forEach(item => {
+        const img = item.querySelector('img');
+        if (img && img.complete && img.naturalWidth === 0) reloadImage(img);
+      });
+    }, 1200);
+  }
+  projects.forEach(item => {
+    const img = item.querySelector('img');
+    if (img) img.addEventListener('error', () => reloadImage(img));
+  });
   function applyFilter() {
     const matching = projects.filter(item => category === 'All' || item.dataset.category === category);
     visible = matching;
@@ -19,6 +40,7 @@
     count.textContent = `${matching.length} pieces to explore`;
     status.textContent = `Showing ${visible.length} of ${matching.length} pieces${category === 'All' ? '' : ` in ${category}`}.`;
     filterButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === category)));
+    recoverImages();
   }
   filters.hidden = false;
   filterButtons.forEach(button => button.addEventListener('click', () => {
